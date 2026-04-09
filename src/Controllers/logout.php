@@ -1,8 +1,8 @@
 <?php
-session_start(); // Inicializar
-session_unset(); // Remover todas as variáveis da sessão
-session_destroy(); // Destruir a sessão completamente
+session_start();       // Inicializa a sessão
+session_unset();       // Remove variáveis da sessão
+session_destroy();     // Destroi a sessão
 
 // Redireciona para a tela de login
-header("Location: ../../views/login_view.php"); 
-exit();
+header("Location: ../../views/login_view.php");
+exit();                
