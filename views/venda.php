@@ -11,8 +11,8 @@ if (!isset($_SESSION['caixa_aberto'])) {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Nova Venda - PDV</title>
-    <link rel="stylesheet" href="../css/nova_venda.css">
+    <title>Vendas</title>
+    <link rel="stylesheet" href="../css/venda.css">
 </head>
 <body>
     <header>
