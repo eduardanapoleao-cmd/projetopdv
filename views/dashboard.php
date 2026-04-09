@@ -36,7 +36,7 @@ if (!isset($_SESSION['caixa_aberto']) || $_SESSION['caixa_aberto'] !== true) {
             </nav>
             <div class="sidebar-footer">
                 <p>Operador: <strong><?php echo $_SESSION['usuario']; ?></strong></p>
-                <a href="../src/login_view.php" class="btn-logout">Sair do Sistema</a>
+                <a href="../src/Controllers/logout.php" class="btn-logout">Sair do Sistema</a>
             </div>
         </aside>
 
