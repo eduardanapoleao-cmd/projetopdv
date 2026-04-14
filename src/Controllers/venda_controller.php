@@ -1,8 +1,14 @@
 <?php
 session_start();
 
-// Garante que o usuário está logado
-require_once "trava.php"; // middleware que impede acesso sem login
+// verifica login primeiro
+require_once "trava.php";
 
-// Chama a view
+// depois verifica caixa aberto
+if (!isset($_SESSION['caixa_aberto'])) {
+    header("Location: ../../views/abertura_caixa.php");
+    exit();
+}
+
+// chama a view
 require_once "../../views/venda.php";
