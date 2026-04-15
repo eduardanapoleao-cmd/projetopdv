@@ -28,5 +28,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Se o acesso for via GET (apenas abrir a página), carrega a view
+// Se o acesso for via GET carrega a view
 require_once "../../views/abertura_caixa.php";

@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (isset($_SESSION['msg'])) {
+    echo "<p style='font-weight:bold'>" . $_SESSION['msg'] . "</p>";
+    unset($_SESSION['msg']);
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -13,7 +21,7 @@
 
     <main class="container">
         <div class="card-sangria">
-            <form action="index.php?controller=Caixa&action=executarSangria" method="POST">
+            <form action="../src/Controllers/sangria_controller.php" method="POST">
                 
                 <div class="form-group">
                     <label for="valor">Valor da Retirada (R$):</label>
