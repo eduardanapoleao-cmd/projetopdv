@@ -21,6 +21,7 @@ if (isset($_SESSION['msg'])) {
 
 <header>
     <h2>Suprimento</h2>
+    <a href="../src/Controllers/venda_controller.php" class="btn-voltar">Voltar para Vendas</a>
 </header>
 
 <main class="container">

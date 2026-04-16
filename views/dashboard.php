@@ -14,6 +14,8 @@ foreach ($vendas as $v) {
         $pedidos_hoje++;
     }
 }
+
+$ehAdmin = ($_SESSION['perfil'] ?? '') === 'admin';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -36,7 +38,9 @@ foreach ($vendas as $v) {
             <nav>
                 <ul>
                     <li class="active"><a>🏠 Dashboard</a></li>
+                    <?php if ($ehAdmin): ?>
                     <li><a href="estoque.php">📦 Estoque</a></li>
+                    <?php endif; ?>
                     <li><a href="../src/Controllers/venda_controller.php">💰 Nova Venda</a></li>
                     <li><a href="clientes.php">👥 Clientes</a></li>
                 </ul>
@@ -61,7 +65,7 @@ foreach ($vendas as $v) {
                 </div>
                 <div class="stat-card">
                     <h3>Produtos</h3>
-                    <p class="value">--</p>
+                    <p class="value"><?= $_SESSION['dashboard_total_itens'] ?? '--' ?></p>
                     <span class="trend">Itens em estoque</span>
                 </div>
                 <div class="stat-card">
@@ -75,7 +79,9 @@ foreach ($vendas as $v) {
                 <h2>Ações Rápidas</h2>
                 <div class="actions-grid">
                     <a href="../src/Controllers/venda_controller.php" class="action-btn primary">Iniciar Nova Venda</a>
+                    <?php if ($ehAdmin): ?>
                     <a href="estoque.php" class="action-btn">Cadastrar Produto</a>
+                    <?php endif; ?>
                 </div>
             </section>
         </main>
