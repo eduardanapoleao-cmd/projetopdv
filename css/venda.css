@@ -236,3 +236,49 @@ td {
 .btn-voltar:hover {
     background-color: #c0392b;
 }
+
+/* --- MENSAGENS DE FEEDBACK --- */
+.venda-msg {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.msg-sucesso {
+    background-color: #eafaf1;
+    color: #1e8449;
+    border: 1px solid #a9dfbf;
+}
+
+.msg-erro {
+    background-color: #fdedec;
+    color: #c0392b;
+    border: 1px solid #f5b7b1;
+}
+
+/* --- BOTÃO REMOVER ITEM --- */
+.btn-remover {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.btn-remover:hover {
+    background-color: #fdedec;
+}
+
+/* --- LINHA VAZIA DA TABELA --- */
+.td-vazio {
+    text-align: center;
+    color: #aaa;
+    font-style: italic;
+    padding: 30px;
+}

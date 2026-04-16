@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -6,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDV Master | Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 
 <body>
@@ -18,9 +20,9 @@
             </div>
             <nav>
                 <ul>
-                    <li class="active"><a>🏠 Dashboard </a></li>
-                    <li><a href="estoque_controller.php">📦 Estoque</a></li>
-                    <li><a href="venda_controller.php">💰 Nova Venda</a></li>
+                    <li class="active"><a>🏠 Dashboard</a></li>
+                    <li><a href="estoque.php">📦 Estoque</a></li>
+                    <li><a href="../src/Controllers/venda_controller.php">💰 Nova Venda</a></li>
                     <li><a href="clientes.php">👥 Clientes</a></li>
                 </ul>
             </nav>
@@ -43,7 +45,7 @@
                     <span class="trend">0 pedidos realizados</span>
                 </div>
                 <div class="stat-card">
-                    <h3>Estoque</h3>
+                    <h3>Produtos</h3>
                     <p class="value">--</p>
                     <span class="trend">Itens em estoque</span>
                 </div>
@@ -57,8 +59,8 @@
             <section class="quick-actions">
                 <h2>Ações Rápidas</h2>
                 <div class="actions-grid">
-                    <a href="venda_controller.php" class="action-btn primary">Iniciar Nova Venda</a>
-                    <a href="produtos.php" class="action-btn">Cadastrar Produto</a>
+                    <a href="../src/Controllers/venda_controller.php" class="action-btn primary">Iniciar Nova Venda</a>
+                    <a href="estoque.php" class="action-btn">Cadastrar Produto</a>
                 </div>
             </section>
         </main>

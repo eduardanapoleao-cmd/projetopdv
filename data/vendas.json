@@ -1,0 +1,47 @@
+[
+    {
+        "id": "venda_69e1259953f5e",
+        "data": "2026-04-16 20:08:25",
+        "operador": "admin",
+        "itens": [
+            {
+                "id": "11",
+                "nome": "coca cola 2L",
+                "preco": 1,
+                "quantidade": 1,
+                "total": 1
+            }
+        ],
+        "total": 1
+    },
+    {
+        "id": "venda_69e125c442118",
+        "data": "2026-04-16 20:09:08",
+        "operador": "admin",
+        "itens": [
+            {
+                "id": "11",
+                "nome": "coca cola 2L",
+                "preco": 1,
+                "quantidade": 1,
+                "total": 1
+            }
+        ],
+        "total": 1
+    },
+    {
+        "id": "venda_69e126a046b63",
+        "data": "2026-04-16 20:12:48",
+        "operador": "admin",
+        "itens": [
+            {
+                "id": "11",
+                "nome": "coca cola 2L",
+                "preco": 1,
+                "quantidade": 2,
+                "total": 2
+            }
+        ],
+        "total": 2
+    }
+]
