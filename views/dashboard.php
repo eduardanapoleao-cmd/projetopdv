@@ -1,5 +1,20 @@
-<?php session_start(); ?>
+<?php
+session_start();
 
+$vendas_path = __DIR__ . '/../data/vendas.json';
+$vendas = file_exists($vendas_path) ? (json_decode(file_get_contents($vendas_path), true) ?? []) : [];
+
+$hoje = date('Y-m-d');
+$total_hoje   = 0.0;
+$pedidos_hoje = 0;
+
+foreach ($vendas as $v) {
+    if (isset($v['data']) && str_starts_with($v['data'], $hoje)) {
+        $total_hoje  += (float)($v['total'] ?? 0);
+        $pedidos_hoje++;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -28,7 +43,7 @@
             </nav>
             <div class="sidebar-footer">
                 <p>Operador: <strong><?php echo $_SESSION['usuario']; ?></strong></p>
-                <a href="logout.php" class="btn-logout">Sair do Sistema</a>
+                <a href="../src/Controllers/logout.php" class="btn-logout">Sair do Sistema</a>
             </div>
         </aside>
 
@@ -41,8 +56,8 @@
             <section class="stats-grid">
                 <div class="stat-card">
                     <h3>Vendas Hoje</h3>
-                    <p class="value">R$ 0,00</p>
-                    <span class="trend">0 pedidos realizados</span>
+                    <p class="value">R$ <?= number_format($total_hoje, 2, ',', '.') ?></p>
+                    <span class="trend"><?= $pedidos_hoje ?> pedido<?= $pedidos_hoje !== 1 ? 's' : '' ?> realizado<?= $pedidos_hoje !== 1 ? 's' : '' ?></span>
                 </div>
                 <div class="stat-card">
                     <h3>Produtos</h3>

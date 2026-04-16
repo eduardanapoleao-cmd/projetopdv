@@ -18,7 +18,7 @@
         </nav>
 
         <h1>🛒 Nova Venda</h1>
-        <a href="../../src/Controllers/dashboard_controller.php" class="btn-voltar">Voltar ao Painel</a>
+        <a href="dashboard_controller.php" class="btn-voltar">Voltar ao Painel</a>
     </header>
 
     <main class="container">

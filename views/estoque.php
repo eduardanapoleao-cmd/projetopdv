@@ -49,8 +49,8 @@ require_once __DIR__ . '/../src/controllers/estoque_controller.php';
             <!-- Formulário de cadastro -->
             <section class="estoque-form-section">
                 <h2 class="section-title">
-                    Adicionar / Aglutinar Produto
-                    <small>(se o ID já existir, a quantidade será somada)</small>
+                    Adicionar Produtos
+                    <small>(Exclusivo para estoque, acessos específicos vão ser construídos com o BD)</small>
                 </h2>
                 <form method="POST" class="estoque-form">
                     <div class="campo">

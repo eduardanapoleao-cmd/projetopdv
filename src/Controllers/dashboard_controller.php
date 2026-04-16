@@ -8,9 +8,6 @@ if (!isset($_SESSION['caixa_aberto']) || $_SESSION['caixa_aberto'] !== true) {
     exit();
 }
 
-// Dados para a View exibir
-$nomeUsuario = $_SESSION['usuario']['nome'] ?? 'Operador';
-$saldoEmCaixa = $_SESSION['saldo_atual'];
-
-// Carrega a View da Dashboard
-require_once "../../views/dashboard.php";
+// Redireciona para a View da Dashboard (mantém URL correta para assets)
+header("Location: ../../views/dashboard.php");
+exit();
