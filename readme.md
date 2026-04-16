@@ -26,8 +26,12 @@ Este sistema foi desenvolvido com o objetivo de simular um PDV, permitindo reali
 - Cadastro de clientes
 - Listagem de itens da venda
 - Finalização de venda
-- Fechamento de caixa
+- Suprimento
+- Sangria
 - Proteção de páginas (sessão)
+  
+## Faltantes
+- Fechamento de Caixa
 
 ---
 
