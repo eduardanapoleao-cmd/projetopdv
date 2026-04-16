@@ -1,10 +1,9 @@
-<?php
-session_start();
-
-if (isset($_SESSION['msg'])) {
-    echo "<p style='font-weight:bold'>" . $_SESSION['msg'] . "</p>";
-    unset($_SESSION['msg']);
-}
+<?php 
+if (isset($_SESSION['msg'])) { 
+    $tipo = $_SESSION['tipo'] ?? 'sucesso';
+    echo "<p class='mensagem {$tipo}'>" . $_SESSION['msg'] . "</p>"; 
+    unset($_SESSION['msg'], $_SESSION['tipo']);
+} 
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

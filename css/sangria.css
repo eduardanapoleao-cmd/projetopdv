@@ -36,10 +36,10 @@ header h2 {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    background-color: #f0543a; /* Laranja Coral da imagem */
-    color: #ffffff !important;  /* Texto sempre branco */
-    padding: 10px 25px;         /* Espaçamento interno */
-    border-radius: 12px;        /* Bordas arredondadas do design */
+    background-color: #f0543a; 
+    color: #ffffff !important;  
+    padding: 10px 25px;         
+    border-radius: 12px;        
     font-size: 16px;
     font-weight: 500;
     border: none;
@@ -48,15 +48,14 @@ header h2 {
 }
 
 .btn-voltar:hover {
-    background-color: #d94a32; /* Tom levemente mais escuro */
+    background-color: #d94a32; 
     filter: brightness(1.1);
     transform: translateY(-1px);
 }
 
 .btn-voltar:active {
-    transform: scale(0.96); /* Efeito de clique */
+    transform: scale(0.96);
 }
-/* -------------------------------------------------- */
 
 /* Container principal */
 .container {
@@ -110,7 +109,7 @@ header h2 {
     box-shadow: 0 0 8px rgba(231, 76, 60, 0.2);
 }
 
-/* Ações do Formulário, Confirmar e Limpar */
+/* ações do formulário confirmar e limpar */
 .form-actions {
     display: flex;
     gap: 15px;
@@ -129,7 +128,7 @@ button {
 }
 
 .btn-confirmar {
-    background-color: #27ae60; /* Verde para confirmar */
+    background-color: #27ae60;
     color: white;
 }
 
@@ -144,6 +143,26 @@ button {
 
 .btn-cancelar:hover {
     background-color: #95a5a6;
+}
+
+.mensagem {
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-family: Arial, sans-serif;
+}
+
+.sucesso {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #28a745;
+}
+
+.erro {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #dc3545;
 }
 
 /* Responsividade */

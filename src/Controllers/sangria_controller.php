@@ -8,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!isset($_SESSION['caixa_aberto'])) {
         $_SESSION['msg'] = "Abra o caixa primeiro.";
+        $_SESSION['tipo'] = "erro";
         header("Location: ../../views/abertura_caixa.php");
         exit();
     }
@@ -16,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!SangriaModel::validar($valor)) {
         $_SESSION['msg'] = "Valor inválido.";
+        $_SESSION['tipo'] = "erro";
         header("Location: ../../views/sangria.php");
         exit();
     }
@@ -24,13 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $resultado = SangriaModel::executar($valor);
 
-    $_SESSION['msg'] = ($resultado === true)
-        ? "Sangria realizada com sucesso!"
-        : $resultado;
+    if ($resultado === true) {
+        $_SESSION['msg'] = "Sangria realizada com sucesso!";
+        $_SESSION['tipo'] = "sucesso";
+    } else {
+        $_SESSION['msg'] = $resultado;
+        $_SESSION['tipo'] = "erro";
+    }
 
     header("Location: ../../views/sangria.php");
     exit();
 }
 
-// GET → carrega view (RELATIVO)
+// GET carrega view
 require_once __DIR__ . "/../../views/sangria.php";
