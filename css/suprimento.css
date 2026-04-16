@@ -18,14 +18,37 @@ body {
 header {
     background-color: #2c3e50;
     color: white;
-    padding: 1.5rem;
-    text-align: center;
+    padding: 1.2rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 header h2 {
     font-weight: 500;
     letter-spacing: 1px;
+}
+
+.btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background-color: #f0543a;
+    color: #ffffff;
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-voltar:hover {
+    background-color: #d94a32;
+    transform: translateY(-1px);
 }
 
 /* Container Principal */

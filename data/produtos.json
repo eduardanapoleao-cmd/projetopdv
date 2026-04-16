@@ -4,5 +4,11 @@
         "nome": "coca cola 2L",
         "preco": 1,
         "quantidade": 30
+    },
+    {
+        "id": "1",
+        "nome": "\u00e1gua",
+        "preco": 12,
+        "quantidade": 23
     }
 ]

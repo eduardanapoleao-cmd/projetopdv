@@ -1,5 +1,13 @@
 <?php
 
+// --- CONTROLE DE ACESSO ---
+$ehAdmin = ($_SESSION['perfil'] ?? '') === 'admin';
+
+if (!$ehAdmin) {
+    header("Location: dashboard.php");
+    exit();
+}
+
 $arquivo = __DIR__ . '/../../data/produtos.json';
 
 // Garante que o diretório de dados existe

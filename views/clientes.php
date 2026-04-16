@@ -27,7 +27,9 @@ require_once __DIR__ . '/../src/controllers/clientes_controller.php';
             <nav>
                 <ul>
                     <li><a href="dashboard.php">🏠 Dashboard</a></li>
+                    <?php if (($_SESSION['perfil'] ?? '') === 'admin'): ?>
                     <li><a href="estoque.php">📦 Estoque</a></li>
+                    <?php endif; ?>
                     <li><a href="../src/Controllers/venda_controller.php">💰 Nova Venda</a></li>
                     <li class="active"><a href="clientes.php">👥 Clientes</a></li>
                 </ul>
