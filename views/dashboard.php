@@ -61,7 +61,7 @@ foreach ($vendas as $v) {
                 </div>
                 <div class="stat-card">
                     <h3>Produtos</h3>
-                    <p class="value">--</p>
+                    <p class="value"><?= $_SESSION['dashboard_total_itens'] ?? '--' ?></p>
                     <span class="trend">Itens em estoque</span>
                 </div>
                 <div class="stat-card">
