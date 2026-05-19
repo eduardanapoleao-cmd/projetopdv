@@ -3,12 +3,18 @@
         "id": "11",
         "nome": "coca cola 2L",
         "preco": 1,
-        "quantidade": 30
+        "quantidade": 1
     },
     {
         "id": "1",
-        "nome": "\u00e1gua",
+        "nome": "água",
         "preco": 12,
         "quantidade": 23
+    },
+    {
+        "id": "2",
+        "nome": "Cerveja",
+        "preco": 3.5,
+        "quantidade": 42
     }
 ]

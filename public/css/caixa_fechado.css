@@ -1,0 +1,165 @@
+/* =============================================
+   caixa_fechado.css
+   ============================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+    min-height: 100vh;
+}
+
+.tela-fechado {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+}
+
+/* ── Card principal ─────────────────────────── */
+.card-fechado {
+    background: #fff;
+    width: 100%;
+    max-width: 520px;
+    padding: 44px 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-top: 6px solid #e74c3c;
+    text-align: center;
+}
+
+.icone-cadeado {
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.card-fechado h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.subtitulo {
+    color: #7f8c8d;
+    font-size: 0.92rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* ── Resumo do fechamento ───────────────────── */
+.resumo-fechamento {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.resumo-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.resumo-item .label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #aaa;
+}
+
+.resumo-item .valor {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.resumo-item.destaque {
+    grid-column: span 2;
+}
+
+.resumo-item.neutro   { background: #eef2ff; }
+.resumo-item.neutro   .valor { color: #4361ee; }
+.resumo-item.positivo { background: #eafaf1; }
+.resumo-item.positivo .valor { color: #27ae60; }
+.resumo-item.negativo { background: #fdedec; }
+.resumo-item.negativo .valor { color: #e74c3c; }
+
+/* ── Botões de ação ─────────────────────────── */
+.acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-abrir,
+.btn-painel,
+.btn-sair {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-abrir {
+    background: #27ae60;
+    color: #fff;
+}
+
+.btn-abrir:hover {
+    background: #219150;
+    transform: translateY(-1px);
+}
+
+.btn-painel {
+    background: #2c3e50;
+    color: #fff;
+}
+
+.btn-painel:hover {
+    background: #1abc9c;
+    transform: translateY(-1px);
+}
+
+.btn-sair {
+    background: #f0f2f5;
+    color: #7f8c8d;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-sair:hover {
+    background: #dde1e7;
+    color: #2c3e50;
+}
+
+/* ── Responsivo ─────────────────────────────── */
+@media (max-width: 480px) {
+    .card-fechado {
+        padding: 32px 24px;
+    }
+
+    .resumo-fechamento {
+        grid-template-columns: 1fr;
+    }
+
+    .resumo-item.destaque {
+        grid-column: span 1;
+    }
+}

@@ -43,5 +43,114 @@
             }
         ],
         "total": 2
+    },
+    {
+        "id": "venda_6a09409707aa6",
+        "data": "2026-05-17 06:14:15",
+        "operador": "admin",
+        "itens": [
+            {
+                "id": "11",
+                "nome": "coca cola 2L",
+                "preco": 1,
+                "quantidade": 1,
+                "total": 1
+            }
+        ],
+        "total": 1
+    },
+    {
+        "id": "venda_6a0940b6c2263",
+        "data": "2026-05-17 06:14:46",
+        "operador": "admin",
+        "itens": [
+            {
+                "id": "11",
+                "nome": "coca cola 2L",
+                "preco": 1,
+                "quantidade": 2,
+                "total": 2
+            }
+        ],
+        "total": 2
+    },
+    {
+        "id": "venda_6a0941438c783",
+        "data": "2026-05-17 06:17:07",
+        "operador": "caixa",
+        "itens": [
+            {
+                "id": "11",
+                "nome": "coca cola 2L",
+                "preco": 1,
+                "quantidade": 25,
+                "total": 25
+            }
+        ],
+        "total": 25
+    },
+    {
+        "id": "venda_6a0bd5958808f",
+        "data": "2026-05-19 05:14:29",
+        "operador": "caixa",
+        "itens": [
+            {
+                "id": "2",
+                "nome": "Cerveja",
+                "preco": 3.5,
+                "quantidade": 1,
+                "total": 3.5
+            }
+        ],
+        "total": 3.5
+    },
+    {
+        "id": "venda_6a0bd5e3a41f0",
+        "data": "2026-05-19 05:15:47",
+        "operador": "admin",
+        "itens": [
+            {
+                "id": "2",
+                "nome": "Cerveja",
+                "preco": 3.5,
+                "quantidade": 1,
+                "total": 3.5
+            }
+        ],
+        "total": 3.5
+    },
+    {
+        "id": "venda_6a0bd7f5bfb25",
+        "data": "2026-05-19 05:24:37",
+        "operador": "caixa",
+        "itens": [
+            {
+                "id": "11",
+                "nome": "coca cola 2L",
+                "preco": 1,
+                "quantidade": 1,
+                "total": 1
+            }
+        ],
+        "total": 1
+    },
+    {
+        "id": "venda_6a0bdca763259",
+        "data": "2026-05-19 05:44:39",
+        "operador": "caixa",
+        "cliente": {
+            "cpf": "229.873.678-21",
+            "nome": "Edson Salame"
+        },
+        "itens": [
+            {
+                "id": "2",
+                "nome": "Cerveja",
+                "preco": 3.5,
+                "quantidade": 1,
+                "total": 3.5
+            }
+        ],
+        "total": 3.5
     }
 ]

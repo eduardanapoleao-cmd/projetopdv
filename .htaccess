@@ -1,0 +1,7 @@
+Options -Indexes
+
+# Redireciona tudo para o front controller, exceto arquivos e pastas reais
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]
