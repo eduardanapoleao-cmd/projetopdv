@@ -1,23 +1,8 @@
 <?php
 require_once BASE_PATH . '/app/Controllers/trava.php';
+require_once BASE_PATH . '/app/Models/ClienteModel.php';
 
-$arquivo = BASE_PATH . '/data/clientes.json';
-
-if (!file_exists(dirname($arquivo))) {
-    mkdir(dirname($arquivo), 0755, true);
-}
-
-function lerClientes(string $arquivo): array
-{
-    return file_exists($arquivo)
-        ? json_decode(file_get_contents($arquivo), true) ?? []
-        : [];
-}
-
-function salvarClientes(string $arquivo, array $dados): void
-{
-    file_put_contents($arquivo, json_encode(array_values($dados), JSON_PRETTY_PRINT));
-}
+$erros = [];
 
 function formatarCPF(string $cpf): string
 {
@@ -28,107 +13,49 @@ function formatarCPF(string $cpf): string
 function validarCPF(string $cpf): bool
 {
     $cpf = preg_replace('/\D/', '', $cpf);
-
-    if (strlen($cpf) !== 11 || preg_match('/(\d)\1{10}/', $cpf)) {
-        return false;
-    }
-
+    if (strlen($cpf) !== 11 || preg_match('/(\d)\1{10}/', $cpf)) return false;
     for ($t = 9; $t < 11; $t++) {
         $soma = 0;
-        for ($i = 0; $i < $t; $i++) {
-            $soma += $cpf[$i] * ($t + 1 - $i);
-        }
-        $digito = ((10 * $soma) % 11) % 10;
-        if ($cpf[$t] != $digito) {
-            return false;
-        }
+        for ($i = 0; $i < $t; $i++) $soma += $cpf[$i] * ($t + 1 - $i);
+        if ($cpf[$t] != ((10 * $soma) % 11) % 10) return false;
     }
-
     return true;
 }
 
-// ── Cadastrar / Atualizar cliente ────────────────────────
+// ── Cadastrar / Atualizar ────────────────────────────────
 if (isset($_POST['enviar'])) {
-
     $cpfRaw   = preg_replace('/\D/', '', $_POST['cpf'] ?? '');
     $nome     = htmlspecialchars(trim($_POST['nome'] ?? ''));
     $endereco = htmlspecialchars(trim($_POST['endereco'] ?? ''));
     $telefone = htmlspecialchars(trim($_POST['telefone'] ?? ''));
 
-    $erros = [];
-
-    if (!validarCPF($cpfRaw)) {
-        $erros[] = 'CPF inválido.';
-    }
-    if (empty($nome)) {
-        $erros[] = 'Nome é obrigatório.';
-    }
+    if (!validarCPF($cpfRaw)) $erros[] = 'CPF inválido.';
+    if (empty($nome))         $erros[] = 'Nome é obrigatório.';
 
     if (empty($erros)) {
-        $cpfFormatado = formatarCPF($cpfRaw);
-        $dados        = lerClientes($arquivo);
-        $encontrou    = false;
-
-        foreach ($dados as &$cliente) {
-            if ($cliente['cpf'] === $cpfFormatado) {
-                $cliente['nome']     = $nome;
-                $cliente['endereco'] = $endereco;
-                $cliente['telefone'] = $telefone;
-                $encontrou           = true;
-                break;
-            }
-        }
-        unset($cliente);
-
-        if (!$encontrou) {
-            $dados[] = [
-                'cpf'           => $cpfFormatado,
-                'nome'          => $nome,
-                'endereco'      => $endereco,
-                'telefone'      => $telefone,
-                'total_compras' => 0.00,
-            ];
-        }
-
-        salvarClientes($arquivo, $dados);
+        ClienteModel::salvar(formatarCPF($cpfRaw), $nome, $endereco, $telefone);
         header('Location: ' . BASE_URL . '/?page=clientes');
         exit();
     }
 }
 
-// ── Excluir cliente ──────────────────────────────────────
+// ── Excluir ──────────────────────────────────────────────
 if (isset($_POST['excluir'])) {
-
-    $cpfExcluir = htmlspecialchars(trim($_POST['cpf_excluir']));
-    $dados      = lerClientes($arquivo);
-    $dados      = array_filter($dados, fn($c) => $c['cpf'] !== $cpfExcluir);
-
-    salvarClientes($arquivo, $dados);
+    ClienteModel::excluir(htmlspecialchars(trim($_POST['cpf_excluir'])));
     header('Location: ' . BASE_URL . '/?page=clientes');
     exit();
 }
 
 // ── Atualizar total de compras ───────────────────────────
 if (isset($_POST['atualizar_compras'])) {
-
-    $cpfAtualizar = htmlspecialchars(trim($_POST['cpf_atualizar']));
-    $novoTotal    = max(0, (float) $_POST['novo_total']);
-    $dados        = lerClientes($arquivo);
-
-    foreach ($dados as &$cliente) {
-        if ($cliente['cpf'] === $cpfAtualizar) {
-            $cliente['total_compras'] = $novoTotal;
-            break;
-        }
-    }
-    unset($cliente);
-
-    salvarClientes($arquivo, $dados);
+    ClienteModel::atualizarTotalCompras(
+        htmlspecialchars(trim($_POST['cpf_atualizar'])),
+        max(0, (float) $_POST['novo_total'])
+    );
     header('Location: ' . BASE_URL . '/?page=clientes');
     exit();
 }
 
-$listaClientes = lerClientes($arquivo);
-$erros         = $erros ?? [];
+$listaClientes = ClienteModel::todos();
 
 require_once BASE_PATH . '/app/Views/clientes.php';

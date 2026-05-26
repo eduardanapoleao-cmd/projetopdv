@@ -1,23 +1,12 @@
 <?php
-$vendas_path  = BASE_PATH . '/data/vendas.json';
-$vendas       = file_exists($vendas_path)
-    ? (json_decode(file_get_contents($vendas_path), true) ?? [])
-    : [];
-
-$hoje         = date('Y-m-d');
-$total_hoje   = 0.0;
-$pedidos_hoje = 0;
-
-foreach ($vendas as $v) {
-    if (isset($v['data']) && str_starts_with($v['data'], $hoje)) {
-        $total_hoje  += (float) ($v['total'] ?? 0);
-        $pedidos_hoje++;
-    }
-}
-
-$ehAdmin = ($_SESSION['perfil'] ?? '') === 'admin';
-// $caixaAberto é definido pelo dashboard_controller
+$ehAdmin     = ($_SESSION['perfil'] ?? '') === 'admin';
 $caixaAberto = $caixaAberto ?? false;
+
+// Busca totais do dia direto do banco
+require_once BASE_PATH . '/app/Models/VendaModel.php';
+$vendaHoje    = VendaModel::totalHoje();
+$total_hoje   = (float) ($vendaHoje['total']   ?? 0);
+$pedidos_hoje = (int)   ($vendaHoje['pedidos'] ?? 0);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

@@ -11,6 +11,9 @@ session_start();
 define('BASE_PATH', __DIR__);
 define('BASE_URL',  '/projetopdv');
 
+// Autoload das classes de configuração
+require_once BASE_PATH . '/app/Config/Database.php';
+
 // Rota padrão
 $page = $_GET['page'] ?? 'login';
 
