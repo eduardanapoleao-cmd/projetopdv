@@ -1,31 +1,35 @@
 <?php
+require_once BASE_PATH . '/app/Config/Database.php';
 
 class Usuario
 {
-    private static $usuarios = [
-        ['nome' => 'admin', 'senha' => '123', 'perfil' => 'admin'],
-        ['nome' => 'caixa', 'senha' => '123', 'perfil' => 'caixa'],
-    ];
-
     /** Valida login e retorna o perfil ('admin'|'caixa') ou false */
     public function validar(string $nome, string $senha)
     {
-        foreach (self::$usuarios as $u) {
-            if ($u['nome'] === $nome && $u['senha'] === $senha) {
-                return $u['perfil'];
-            }
+        $pdo  = Database::get();
+        $stmt = $pdo->prepare(
+            'SELECT senha, perfil FROM usuarios WHERE nome = :nome AND ativo = 1 LIMIT 1'
+        );
+        $stmt->execute([':nome' => $nome]);
+        $row = $stmt->fetch();
+
+        if ($row && password_verify($senha, $row['senha'])) {
+            return $row['perfil'];
         }
+
         return false;
     }
 
     /** Valida apenas a senha do admin (usado na autorização de operações restritas) */
     public static function validarAdmin(string $senha): bool
     {
-        foreach (self::$usuarios as $u) {
-            if ($u['perfil'] === 'admin' && $u['senha'] === $senha) {
-                return true;
-            }
-        }
-        return false;
+        $pdo  = Database::get();
+        $stmt = $pdo->prepare(
+            'SELECT senha FROM usuarios WHERE perfil = :perfil AND ativo = 1 LIMIT 1'
+        );
+        $stmt->execute([':perfil' => 'admin']);
+        $row = $stmt->fetch();
+
+        return $row && password_verify($senha, $row['senha']);
     }
 }

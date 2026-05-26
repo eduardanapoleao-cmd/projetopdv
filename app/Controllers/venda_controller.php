@@ -1,29 +1,17 @@
 <?php
 require_once BASE_PATH . '/app/Controllers/trava.php';
+require_once BASE_PATH . '/app/Models/ProdutoModel.php';
+require_once BASE_PATH . '/app/Models/ClienteModel.php';
+require_once BASE_PATH . '/app/Models/VendaModel.php';
 
 if (!isset($_SESSION['caixa_aberto'])) {
-    if (($_SESSION['perfil'] ?? '') === 'caixa') {
-        header('Location: ' . BASE_URL . '/?page=caixa_fechado');
-    } else {
-        header('Location: ' . BASE_URL . '/?page=abertura_caixa');
-    }
+    header('Location: ' . BASE_URL . '/?page=' .
+        (($_SESSION['perfil'] ?? '') === 'caixa' ? 'caixa_fechado' : 'abertura_caixa'));
     exit();
 }
 
 if (!isset($_SESSION['venda_itens'])) {
     $_SESSION['venda_itens'] = [];
-}
-
-$produtos_path = BASE_PATH . '/data/produtos.json';
-$vendas_path   = BASE_PATH . '/data/vendas.json';
-$clientes_path = BASE_PATH . '/data/clientes.json';
-
-// ── Helper: lê e salva clientes ───────────────────────────
-function lerClientesVenda(string $path): array
-{
-    return file_exists($path)
-        ? json_decode(file_get_contents($path), true) ?? []
-        : [];
 }
 
 function formatarCPFVenda(string $cpf): string
@@ -32,37 +20,25 @@ function formatarCPFVenda(string $cpf): string
     return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $cpf);
 }
 
-// ── BUSCAR CLIENTE POR CPF ────────────────────────────────
+// ── BUSCAR CLIENTE ────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'buscar_cliente') {
+    $cpf = formatarCPFVenda($_POST['cpf_cliente'] ?? '');
+    $cli = ClienteModel::buscarPorCpf($cpf);
 
-    $cpfRaw = preg_replace('/\D/', '', $_POST['cpf_cliente'] ?? '');
-    $cpfFmt = formatarCPFVenda($cpfRaw);
-
-    $clientes  = lerClientesVenda($clientes_path);
-    $encontrado = null;
-
-    foreach ($clientes as $c) {
-        if ($c['cpf'] === $cpfFmt) {
-            $encontrado = $c;
-            break;
-        }
-    }
-
-    if ($encontrado) {
-        $_SESSION['venda_cliente'] = $encontrado;
-        $_SESSION['venda_msg']     = "Cliente {$encontrado['nome']} vinculado à venda.";
+    if ($cli) {
+        $_SESSION['venda_cliente'] = $cli;
+        $_SESSION['venda_msg']     = "Cliente {$cli['nome']} vinculado à venda.";
         $_SESSION['venda_tipo']    = 'sucesso';
     } else {
         unset($_SESSION['venda_cliente']);
-        $_SESSION['venda_msg']  = "Cliente com CPF {$cpfFmt} não encontrado.";
+        $_SESSION['venda_msg']  = "Cliente com CPF {$cpf} não encontrado.";
         $_SESSION['venda_tipo'] = 'erro';
     }
-
     header('Location: ' . BASE_URL . '/?page=venda');
     exit();
 }
 
-// ── REMOVER CLIENTE DA VENDA ──────────────────────────────
+// ── REMOVER CLIENTE ───────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'remover_cliente') {
     unset($_SESSION['venda_cliente']);
     header('Location: ' . BASE_URL . '/?page=venda');
@@ -71,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'remov
 
 // ── ADICIONAR ITEM ────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'adicionar_item') {
-
     $busca      = trim($_POST['produto'] ?? '');
     $quantidade = max(1, (int) ($_POST['quantidade'] ?? 1));
 
@@ -82,31 +57,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'adici
         exit();
     }
 
-    $produtos   = json_decode(file_get_contents($produtos_path), true) ?? [];
-    $encontrado = null;
+    $produto = ProdutoModel::buscar($busca);
 
-    foreach ($produtos as $p) {
-        if ((string) $p['id'] === $busca || strtolower($p['nome']) === strtolower($busca)) {
-            $encontrado = $p;
-            break;
-        }
-    }
-
-    if (!$encontrado) {
+    if (!$produto) {
         $_SESSION['venda_msg']  = "Produto \"$busca\" não encontrado.";
         $_SESSION['venda_tipo'] = 'erro';
         header('Location: ' . BASE_URL . '/?page=venda');
         exit();
     }
 
-    if ($quantidade > $encontrado['quantidade']) {
-        $_SESSION['venda_msg']  = "Estoque insuficiente. Disponível: {$encontrado['quantidade']}.";
+    if ($quantidade > $produto['quantidade']) {
+        $_SESSION['venda_msg']  = "Estoque insuficiente. Disponível: {$produto['quantidade']}.";
         $_SESSION['venda_tipo'] = 'erro';
         header('Location: ' . BASE_URL . '/?page=venda');
         exit();
     }
 
-    $id    = (string) $encontrado['id'];
+    $id    = (string) $produto['id'];
     $existe = false;
     foreach ($_SESSION['venda_itens'] as &$item) {
         if ($item['id'] === $id) {
@@ -121,10 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'adici
     if (!$existe) {
         $_SESSION['venda_itens'][] = [
             'id'         => $id,
-            'nome'       => $encontrado['nome'],
-            'preco'      => (float) $encontrado['preco'],
+            'nome'       => $produto['nome'],
+            'preco'      => (float) $produto['preco'],
             'quantidade' => $quantidade,
-            'total'      => $quantidade * (float) $encontrado['preco'],
+            'total'      => $quantidade * (float) $produto['preco'],
         ];
     }
 
@@ -136,19 +103,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'adici
 
 // ── REMOVER ITEM ──────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'remover_item') {
-
     $id_remover = $_POST['item_id'] ?? '';
     $_SESSION['venda_itens'] = array_values(
         array_filter($_SESSION['venda_itens'], fn($i) => $i['id'] !== $id_remover)
     );
-
     header('Location: ' . BASE_URL . '/?page=venda');
     exit();
 }
 
 // ── FINALIZAR VENDA ───────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'finalizar_venda') {
-
     if (empty($_SESSION['venda_itens'])) {
         $_SESSION['venda_msg']  = 'Adicione ao menos um item antes de finalizar.';
         $_SESSION['venda_tipo'] = 'erro';
@@ -156,56 +120,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'final
         exit();
     }
 
-    $total    = array_sum(array_column($_SESSION['venda_itens'], 'total'));
-    $cliente  = $_SESSION['venda_cliente'] ?? null;
+    $total   = array_sum(array_column($_SESSION['venda_itens'], 'total'));
+    $cliente = $_SESSION['venda_cliente'] ?? null;
 
-    $venda = [
-        'id'       => uniqid('venda_'),
-        'data'     => date('Y-m-d H:i:s'),
-        'operador' => $_SESSION['usuario'] ?? 'desconhecido',
-        'cliente'  => $cliente ? ['cpf' => $cliente['cpf'], 'nome' => $cliente['nome']] : null,
-        'itens'    => $_SESSION['venda_itens'],
-        'total'    => $total,
-    ];
+    // Registra venda e itens no banco
+    VendaModel::registrar(
+        $_SESSION['usuario'] ?? 'desconhecido',
+        $total,
+        $_SESSION['venda_itens'],
+        $cliente['cpf'] ?? null
+    );
 
-    // Salva a venda
-    $vendas = [];
-    if (file_exists($vendas_path)) {
-        $vendas = json_decode(file_get_contents($vendas_path), true) ?? [];
-    }
-    $vendas[] = $venda;
-    file_put_contents($vendas_path, json_encode($vendas, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-    // Desconta do estoque
-    $produtos = json_decode(file_get_contents($produtos_path), true) ?? [];
+    // Desconta estoque
     foreach ($_SESSION['venda_itens'] as $item) {
-        foreach ($produtos as &$p) {
-            if ((string) $p['id'] === $item['id']) {
-                $p['quantidade'] -= $item['quantidade'];
-                break;
-            }
-        }
-        unset($p);
+        ProdutoModel::decrementarQuantidade($item['id'], $item['quantidade']);
     }
-    file_put_contents($produtos_path, json_encode($produtos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-    // Atualiza total_compras do cliente vinculado
+    // Atualiza total_compras do cliente
     if ($cliente) {
-        $clientes = lerClientesVenda($clientes_path);
-        foreach ($clientes as &$c) {
-            if ($c['cpf'] === $cliente['cpf']) {
-                $c['total_compras'] = ($c['total_compras'] ?? 0) + $total;
-                break;
-            }
-        }
-        unset($c);
-        file_put_contents($clientes_path, json_encode(array_values($clientes), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        ClienteModel::incrementarTotalCompras($cliente['cpf'], $total);
     }
 
-    // Limpa carrinho e cliente vinculado
     unset($_SESSION['venda_itens'], $_SESSION['venda_cliente']);
     $_SESSION['venda_itens'] = [];
-    $_SESSION['venda_msg']   = 'Venda finalizada com sucesso! Total: R$ ' . number_format($total, 2, ',', '.')
+    $_SESSION['venda_msg']   = 'Venda finalizada! Total: R$ ' . number_format($total, 2, ',', '.')
         . ($cliente ? " — Cliente: {$cliente['nome']}" : '');
     $_SESSION['venda_tipo']  = 'sucesso';
 
@@ -213,5 +151,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'final
     exit();
 }
 
-// ── EXIBE A VIEW ──────────────────────────────────────────
 require_once BASE_PATH . '/app/Views/venda.php';
